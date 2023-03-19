@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <svg id="line-graph" height=300 width=400></svg>
+  <svg id="line-graph" height=300 width=350></svg>
 
 
   <script>
@@ -36,17 +36,6 @@
       const yearExtent = d3.extent(years);
 
       // OKAY EVERYONE after looking at the data  I AM DOING THE 1-n THING BC THATS APPARENTLY HOW THEY DID IT LOLLLL 
-
-      // hs marriage rates
-      // const hsMarriage = d3.map(marriageData, d => [d.year, (1 - d.HS_2534)]);
-      // // some college
-      // const someCollege = d3.map(marriageData, d => [d.year, (1 - d.SC_2534)]);
-      // // college grad
-      // const collegeGrad = d3.map(marriageData, d => [d.year, (1 - d.BAp_2534)]);
-
-      
-      
-
       // making structure to store these values in
       let collegeGrad = []; 
       let someCollege = [];
@@ -59,7 +48,7 @@
         hsOrLess.push({year: d.year, val: (1 - d.HS_2534)})
       });
 
-      console.log(collegeGrad);
+      console.log(collegeGrad); //jus checkin
 
 
       // scales
@@ -90,7 +79,6 @@
                 .style("font-size", 12)
                 .attr("transform", `translate(${margins.left},${graphHeight + margins.top })`)
                 .call(bottomAxis); 
-      
 
       // left axis and horizontal gridlines
       let leftAxis = d3.axisLeft(yScale)
@@ -115,33 +103,40 @@
       
       // line generator for line plots 
       const line = d3.line()
-                              .x(d => xScale(d.year))
-                              .y(d => yScale(d.val));      
-      // const lineGenerator = d3.line().x(d => xScale(d)).y(d => yScale(d));
+                     .x(d => xScale(d.year))
+                     .y(d => yScale(d.val));      
      
-      // let gTagsHS = graphArea.selectAll("g")
-      //                     .data(hsOrLess)
-      //                     .join("g")
-      //                     .attr("class", "gTagHS")
-      //                     .style("stroke", "blue");  
-      // let gTagsSC = graphArea.selectAll("g")
-      //                     .data(someCollege)
-      //                     .join("g")
-      //                     .attr("class", "gTagSC")
-      //                     .style("stroke", "blue");  
-      let gTagsCG = graphArea.selectAll("g")
-                          .data(collegeGrad)
+      // path for hs or less
+      let gTagHS = graphArea.append("g")
+                          .data(hsOrLess)
                           .join("g")
-                          .attr("class", "gTagCG")
-                          .style("stroke", "blue");  
-
-      gTagsCG.append("path")
-           .attr("d", d => line(d))
-           .attr("note", d => d.val)
+                          .attr("class", "gTagHS")
+                          .style("stroke", "#0000FF"); 
+      gTagHS.append("path")
+           .attr("d", line(hsOrLess))
            .style("stroke-width", "2px")
            .style("fill", "none");
 
-      // graphArea.append("path").attr("d", d => lineGenerator([[1960, 0.7], [1980, 0.5]]));
+      // path for some college
+      let gTagSC = graphArea.append("g")
+                          .data(someCollege)
+                          .join("g")
+                          .attr("class", "gTagSC")
+                          .style("stroke", "#89CFF0");  
+      gTagSC.append("path")
+           .attr("d", line(someCollege))
+           .style("stroke-width", "2px")
+           .style("fill", "none");     
+
+      // path for college grads
+      let gTagCG = graphArea.append("g")
+                          .data(collegeGrad)
+                          .attr("class", "gTagCG")
+                          .style("stroke", "#7393B3");  
+      gTagCG.append("path")
+           .attr("d", line(collegeGrad))
+           .style("stroke-width", "2px")
+           .style("fill", "none");
     }
     requestData();
 
