@@ -9,7 +9,143 @@
 </head>
 
 <body>
+  <svg id="line-graph" height=300 width=400></svg>
 
 
+  <script>
+    const graph = d3.select("svg#line-graph");
+
+    const requestData = async function () {
+      const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
+
+      console.log(marriageData);
+
+      const height = graph.attr("height");
+      const width = graph.attr("width");
+      const margins = { top: 10, right: 10, bottom: 40, left: 30 };
+
+      const graphHeight = height - margins.top - margins.bottom;
+      const graphWidth = width - margins.left - margins.right;
+      let graphArea = graph.append("g")
+                            .attr("transform", `translate(${margins.left}, ${margins.top})`);
+
+      let annotations = graph.append("g")
+                             .attr("id", "annotations");
+
+      const years = d3.map(marriageData, d => d.year);
+      const yearExtent = d3.extent(years);
+
+      // OKAY EVERYONE after looking at the data  I AM DOING THE 1-n THING BC THATS APPARENTLY HOW THEY DID IT LOLLLL 
+
+      // hs marriage rates
+      // const hsMarriage = d3.map(marriageData, d => [d.year, (1 - d.HS_2534)]);
+      // // some college
+      // const someCollege = d3.map(marriageData, d => [d.year, (1 - d.SC_2534)]);
+      // // college grad
+      // const collegeGrad = d3.map(marriageData, d => [d.year, (1 - d.BAp_2534)]);
+
+      
+      
+
+      // making structure to store these values in
+      let collegeGrad = []; 
+      let someCollege = [];
+      let hsOrLess = [];
+
+      // hs = high school or less, sc = some college, cd = college degree
+      marriageData.forEach(d => {
+        collegeGrad.push({year: d.year, val: (1 - d.BAp_2534)})
+        someCollege.push({year: d.year, val: (1 - d.SC_2534)})
+        hsOrLess.push({year: d.year, val: (1 - d.HS_2534)})
+      });
+
+      console.log(collegeGrad);
+
+
+      // scales
+      const xScale = d3.scaleLinear()
+                       .domain(yearExtent)
+                       .range([0, graphWidth]);
+      const yScale = d3.scaleLinear()
+                       .domain([0, 1])
+                       .range([graphHeight, 0])
+
+      let bottomAxis = d3.axisBottom(xScale)
+                         .tickFormat(d3.format("d"))
+                         .ticks(6);
+
+      let verticalGrid = d3.axisBottom(xScale)
+                           .ticks(6)
+                           .tickSize(-graphHeight)
+                           .tickFormat("");
+      // vertical gridlines
+      annotations.append("g")
+           .attr("class", "gridlines")
+           .attr('transform', `translate(${margins.left},${graphHeight + margins.top})`)
+           .call(verticalGrid);
+
+      //x axis
+      annotations.append("g")
+                .attr("class", "x-axis")
+                .style("font-size", 12)
+                .attr("transform", `translate(${margins.left},${graphHeight + margins.top })`)
+                .call(bottomAxis); 
+      
+
+      // left axis and horizontal gridlines
+      let leftAxis = d3.axisLeft(yScale)
+                       .tickValues([0, .25, .50, .75, 1])
+                       .tickFormat(d => d * 100);
+
+      let horizontalGrid = d3.axisLeft(yScale)
+                             .tickValues([0, .25, .50, .75, 1])
+                             .tickSize(-graphWidth)
+                             .tickFormat("");
+      // horizontal gridlines                       
+      annotations.append("g")
+                 .attr("class", "gridlines")
+                 .attr("transform", `translate(${margins.left},${margins.top})`)
+                 .call(horizontalGrid);  
+      // y axis
+      annotations.append("g")
+                 .attr("class", "y-axis")
+                 .style("font-size", 12)
+                 .attr("transform", `translate(${margins.left},${margins.top})`)
+                 .call(leftAxis); 
+      
+      // line generator for line plots 
+      const line = d3.line()
+                              .x(d => xScale(d.year))
+                              .y(d => yScale(d.val));      
+      // const lineGenerator = d3.line().x(d => xScale(d)).y(d => yScale(d));
+     
+      // let gTagsHS = graphArea.selectAll("g")
+      //                     .data(hsOrLess)
+      //                     .join("g")
+      //                     .attr("class", "gTagHS")
+      //                     .style("stroke", "blue");  
+      // let gTagsSC = graphArea.selectAll("g")
+      //                     .data(someCollege)
+      //                     .join("g")
+      //                     .attr("class", "gTagSC")
+      //                     .style("stroke", "blue");  
+      let gTagsCG = graphArea.selectAll("g")
+                          .data(collegeGrad)
+                          .join("g")
+                          .attr("class", "gTagCG")
+                          .style("stroke", "blue");  
+
+      gTagsCG.append("path")
+           .attr("d", d => line(d))
+           .attr("note", d => d.val)
+           .style("stroke-width", "2px")
+           .style("fill", "none");
+
+      // graphArea.append("path").attr("d", d => lineGenerator([[1960, 0.7], [1980, 0.5]]));
+    }
+    requestData();
+
+  </script>
 </body>
+
 </html>
