@@ -46,18 +46,28 @@
 
       // OKAY EVERYONE after looking at the data  I AM DOING THE 1-n THING BC THATS APPARENTLY HOW THEY DID IT LOLLLL 
       // making structure to store these values in
+      // structure: dict = [{year: 1960, val: 0.000}, {year: 1970, val: 0.000} ...]
       let collegeGrad = []; 
       let someCollege = [];
       let hsOrLess = [];
 
-      // hs = high school or less, sc = some college, cd = college degree
+      let raceWhite = [];
+      let raceHispanic = [];
+      let raceBlack = [];
+
+      
       marriageData.forEach(d => {
-        collegeGrad.push({year: d.year, val: (1 - d.BAp_2534)})
-        someCollege.push({year: d.year, val: (1 - d.SC_2534)})
-        hsOrLess.push({year: d.year, val: (1 - d.HS_2534)})
+        collegeGrad.push({year: d.year, val: (1 - d.BAp_2534)});
+        someCollege.push({year: d.year, val: (1 - d.SC_2534)});
+        hsOrLess.push({year: d.year, val: (1 - d.HS_2534)});
+        raceWhite.push({year: d.year, val: (1 - d.White_2534)});
+        raceHispanic.push({year: d.year, val: (1 - d.Hisp_2534)});
+        raceBlack.push({year: d.year, val: (1 - d.Black_2534)});
+
       });
 
       console.log(collegeGrad); //jus checkin
+      console.log(raceHispanic);
 
 
       // scales
@@ -116,33 +126,76 @@
                      .y(d => yScale(d.val));      
      
       // path for hs or less
-      let gTagHS = graphArea.append("g")
-                          .join("g")
-                          .attr("class", "education")
-                          .style("stroke", "#0000FF"); 
+      let gTagEdu = graphArea.append("g");
+      let gTagHS = gTagEdu.append("g")
+                            .attr("class", "education")
+                            .style("stroke", "#0000FF"); 
       gTagHS.append("path")
            .attr("d", line(hsOrLess))
            .style("stroke-width", "2px")
            .style("fill", "none");
 
       // path for some college
-      let gTagSC = graphArea.append("g")
-                          .join("g")
-                          .attr("class", "education")
-                          .style("stroke", "#89CFF0");  
+      let gTagSC = gTagEdu.append("g")
+                            .attr("class", "education")
+                            .style("stroke", "#89CFF0");  
       gTagSC.append("path")
            .attr("d", line(someCollege))
            .style("stroke-width", "2px")
            .style("fill", "none");     
 
       // path for college grads
-      let gTagCG = graphArea.append("g")
-                          .attr("class", "education")
-                          .style("stroke", "#7393B3");  
+      let gTagCG = gTagEdu.append("g")
+                            .attr("class", "education")
+                            .style("stroke", "#7393B3");  
       gTagCG.append("path")
            .attr("d", line(collegeGrad))
            .style("stroke-width", "2px")
            .style("fill", "none");
+
+
+      //path for diff races:
+      let raceGTag = graphArea.append("g")
+                              .attr('visibility', "hidden");
+      let gTagHisp = raceGTag.append("g")
+                              .attr("class", "race")
+                              .style("stroke", "#BF40BF");  
+      gTagHisp.append("path")
+              .attr("d", line(raceHispanic))
+              .style("stroke-width", "2px")
+              .style("fill", "none");    
+
+      let gTagWhite = raceGTag.append("g")
+                               .attr("class", "race")
+                               .style("stroke", "#9F2B68");  
+      gTagWhite.append("path")
+               .attr("d", line(raceWhite))
+               .style("stroke-width", "2px")
+               .style("fill", "none");  
+                
+      let gTagBlack = raceGTag.append("g")
+                               .attr("class", "race")
+                               .style("stroke", "#800020"); 
+      gTagBlack.append("path")
+               .attr("d", line(raceBlack))
+               .style("stroke-width", "2px")
+               .style("fill", "none");   
+
+      // creating a toggled state for the diff views 
+      let toggled = true;
+
+      toggle.on("click", function () {
+        if (toggled) {
+          gTagEdu.attr("visibility", "hidden");
+          raceGTag.attr("visibility", "visible");
+          toggled = false;
+        } else {
+          gTagEdu.attr("visibility", "visible");
+          raceGTag.attr("visibility", "hidden");
+          toggled = true;
+        }
+      });
+
     }
     requestData();
 

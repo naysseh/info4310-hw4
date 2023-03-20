@@ -4,10 +4,13 @@
 
 
 .education {
-  visibility: visible;
+  /* visibility: visible; */
 }
 
+.race {
+  /* visibility: hidden; */
+}
 
 .main-container {
-  
+
 }
