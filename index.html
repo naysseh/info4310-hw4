@@ -9,11 +9,20 @@
 </head>
 
 <body>
-  <svg id="line-graph" height=300 width=350></svg>
+  <main>
+    <div id="main-container">
+      <svg id="line-graph" height=300 width=350></svg>
+      <label for="switch">
+        <button id="toggle-button" type="button">Toggle</button>
+      </label>
+    </div>
+  </main>
+
 
 
   <script>
     const graph = d3.select("svg#line-graph");
+    const toggle = d3.select("button#toggle-button");
 
     const requestData = async function () {
       const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
@@ -108,9 +117,8 @@
      
       // path for hs or less
       let gTagHS = graphArea.append("g")
-                          .data(hsOrLess)
                           .join("g")
-                          .attr("class", "gTagHS")
+                          .attr("class", "education")
                           .style("stroke", "#0000FF"); 
       gTagHS.append("path")
            .attr("d", line(hsOrLess))
@@ -119,9 +127,8 @@
 
       // path for some college
       let gTagSC = graphArea.append("g")
-                          .data(someCollege)
                           .join("g")
-                          .attr("class", "gTagSC")
+                          .attr("class", "education")
                           .style("stroke", "#89CFF0");  
       gTagSC.append("path")
            .attr("d", line(someCollege))
@@ -130,8 +137,7 @@
 
       // path for college grads
       let gTagCG = graphArea.append("g")
-                          .data(collegeGrad)
-                          .attr("class", "gTagCG")
+                          .attr("class", "education")
                           .style("stroke", "#7393B3");  
       gTagCG.append("path")
            .attr("d", line(collegeGrad))
