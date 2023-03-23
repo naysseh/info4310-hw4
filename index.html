@@ -12,24 +12,28 @@
   <main>
     <div id="main-container">
       <h1>Marriage Rates by Education and Race</h1>
-      <p id="description">The Pew Research Center released a report in 2014 presenting an overall decline in marriage rates across the United States. Over 50 years prior, the majority of Americans aged 25 to 34 were married. Today, the number has decreased drastically. Does this disparity persist across education levels, and different races?  </p>
+      <p id="description">The Pew Research Center released a report in 2014 presenting an overall decline in marriage
+        rates across the United States. Over 50 years prior, the majority of Americans aged 25 to 34 were married.
+        Today, the number has decreased drastically. Does this disparity persist across education levels, and different
+        races? </p>
       <h2 id="subtitle">Ages 25 to 34</h2>
       <div id="graph-container">
         <svg id="line-graph" height=300 width=350></svg>
       </div>
-      
-      <label for="switch">
-        <button id="toggle-button" type="button"></button>
-      </label>
-    </div>
+
+      <div class="toggle">
+        <button class="switch selected" id="ed-button" type="button">Education</button>
+        <button class="switch" id="race-button" type="button">Race</button>
+        </label>
+      </div>
   </main>
 
 
 
   <script>
     const graph = d3.select("svg#line-graph");
-    const toggle = d3.select("button#toggle-button").append("text") 
-          .text("Show Marriage Rate by Race"); // do we want this toggle by text or do we want tabs??? 
+    const edToggle = d3.select("button#ed-button");
+    const raceToggle = d3.select("button#race-button");
 
     const requestData = async function () {
       const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
@@ -43,10 +47,10 @@
       const graphHeight = height - margins.top - margins.bottom;
       const graphWidth = width - margins.left - margins.right;
       let graphArea = graph.append("g")
-                            .attr("transform", `translate(${margins.left}, ${margins.top})`);
+        .attr("transform", `translate(${margins.left}, ${margins.top})`);
 
       let annotations = graph.append("g")
-                             .attr("id", "annotations");
+        .attr("id", "annotations");
 
       const years = d3.map(marriageData, d => d.year);
       const yearExtent = d3.extent(years);
@@ -54,7 +58,7 @@
       // OKAY EVERYONE after looking at the data  I AM DOING THE 1-n THING BC THATS APPARENTLY HOW THEY DID IT LOLLLL 
       // making structure to store these values in
       // structure: dict = [{year: 1960, val: 0.000}, {year: 1970, val: 0.000} ...]
-      let collegeGrad = []; 
+      let collegeGrad = [];
       let someCollege = [];
       let hsOrLess = [];
 
@@ -62,14 +66,14 @@
       let raceHispanic = [];
       let raceBlack = [];
 
-      
+
       marriageData.forEach(d => {
-        collegeGrad.push({year: d.year, val: (1 - d.BAp_2534)});
-        someCollege.push({year: d.year, val: (1 - d.SC_2534)});
-        hsOrLess.push({year: d.year, val: (1 - d.HS_2534)});
-        raceWhite.push({year: d.year, val: (1 - d.White_2534)});
-        raceHispanic.push({year: d.year, val: (1 - d.Hisp_2534)});
-        raceBlack.push({year: d.year, val: (1 - d.Black_2534)});
+        collegeGrad.push({ year: d.year, val: (1 - d.BAp_2534) });
+        someCollege.push({ year: d.year, val: (1 - d.SC_2534) });
+        hsOrLess.push({ year: d.year, val: (1 - d.HS_2534) });
+        raceWhite.push({ year: d.year, val: (1 - d.White_2534) });
+        raceHispanic.push({ year: d.year, val: (1 - d.Hisp_2534) });
+        raceBlack.push({ year: d.year, val: (1 - d.Black_2534) });
 
       });
 
@@ -79,137 +83,145 @@
 
       // scales
       const xScale = d3.scaleLinear()
-                       .domain(yearExtent)
-                       .range([0, graphWidth]);
+        .domain(yearExtent)
+        .range([0, graphWidth]);
       const yScale = d3.scaleLinear()
-                       .domain([0, 1])
-                       .range([graphHeight, 0])
+        .domain([0, 1])
+        .range([graphHeight, 0])
 
       let bottomAxis = d3.axisBottom(xScale)
-                         .tickFormat(d3.format("d")) 
-                         .ticks(6);
+        .tickFormat(d3.format("d"))
+        .ticks(6);
 
       let verticalGrid = d3.axisBottom(xScale)
-                           .ticks(6)
-                           .tickSize(-graphHeight)
-                           .tickFormat("");
+        .ticks(6)
+        .tickSize(-graphHeight)
+        .tickFormat("");
       // vertical gridlines
       annotations.append("g")
-           .attr("class", "gridlines")
-           .attr('transform', `translate(${margins.left},${graphHeight + margins.top})`)
-           .call(verticalGrid);
+        .attr("class", "gridlines")
+        .attr('transform', `translate(${margins.left},${graphHeight + margins.top})`)
+        .call(verticalGrid);
 
       //x axis
       annotations.append("g")
-                .attr("class", "x-axis")
-                .style("font-size", 12)
-                .attr("transform", `translate(${margins.left},${graphHeight + margins.top })`)
-                .call(bottomAxis); 
+        .attr("class", "x-axis")
+        .style("font-size", 12)
+        .attr("transform", `translate(${margins.left},${graphHeight + margins.top})`)
+        .call(bottomAxis);
 
       // left axis and horizontal gridlines
       let leftAxis = d3.axisLeft(yScale)
-                       .tickValues([0, .25, .50, .75, 1])
-                       .tickFormat(d3.format(".0%") );
+        .tickValues([0, .25, .50, .75, 1])
+        .tickFormat(d3.format(".0%"));
 
       let horizontalGrid = d3.axisLeft(yScale)
-                             .tickValues([0, .25, .50, .75, 1])
-                             .tickSize(-graphWidth)
-                             .tickFormat("");
+        .tickValues([0, .25, .50, .75, 1])
+        .tickSize(-graphWidth)
+        .tickFormat("");
       // horizontal gridlines                       
       annotations.append("g")
-                 .attr("class", "gridlines")
-                 .attr("transform", `translate(${margins.left},${margins.top})`)
-                 .call(horizontalGrid);  
+        .attr("class", "gridlines")
+        .attr("transform", `translate(${margins.left},${margins.top})`)
+        .call(horizontalGrid);
       // y axis
       annotations.append("g")
-                 .attr("class", "y-axis")
-                 .style("font-size", 12)
-                 .attr("transform", `translate(${margins.left},${margins.top})`)
-                 .call(leftAxis); 
-      
+        .attr("class", "y-axis")
+        .style("font-size", 12)
+        .attr("transform", `translate(${margins.left},${margins.top})`)
+        .call(leftAxis);
+
       // line generator for line plots 
       const line = d3.line()
-                     .x(d => xScale(d.year))
-                     .y(d => yScale(d.val));      
-     
+        .x(d => xScale(d.year))
+        .y(d => yScale(d.val));
+
       // path for hs or less
       let gTagEdu = graphArea.append("g");
       let gTagHS = gTagEdu.append("g")
-                            .attr("class", "education")
-                            .style("stroke", "#0000FF"); 
+        .attr("class", "education")
+        .style("stroke", "#0000FF");
       gTagHS.append("path")
-           .attr("d", line(hsOrLess))
-           .style("stroke-width", "2px")
-           .style("fill", "none");
+        .attr("d", line(hsOrLess))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
 
       // path for some college
       let gTagSC = gTagEdu.append("g")
-                            .attr("class", "education")
-                            .style("stroke", "#89CFF0");  
+        .attr("class", "education")
+        .style("stroke", "#89CFF0");
       gTagSC.append("path")
-           .attr("d", line(someCollege))
-           .style("stroke-width", "2px")
-           .style("fill", "none");     
+        .attr("d", line(someCollege))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
 
       // path for college grads
       let gTagCG = gTagEdu.append("g")
-                            .attr("class", "education")
-                            .style("stroke", "#7393B3");  
+        .attr("class", "education")
+        .style("stroke", "#7393B3");
       gTagCG.append("path")
-           .attr("d", line(collegeGrad))
-           .style("stroke-width", "2px")
-           .style("fill", "none");
+        .attr("d", line(collegeGrad))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
 
 
       //path for diff races:
       let raceGTag = graphArea.append("g")
-                              .attr('visibility', "hidden");
+        .attr('visibility', "hidden");
       let gTagHisp = raceGTag.append("g")
-                              .attr("class", "race")
-                              .style("stroke", "#BF40BF");  
+        .attr("class", "race")
+        .style("stroke", "#BF40BF");
       gTagHisp.append("path")
-              .attr("d", line(raceHispanic))
-              .style("stroke-width", "2px")
-              .style("fill", "none");    
+        .attr("d", line(raceHispanic))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
 
       let gTagWhite = raceGTag.append("g")
-                               .attr("class", "race")
-                               .style("stroke", "#9F2B68");  
+        .attr("class", "race")
+        .style("stroke", "#9F2B68");
       gTagWhite.append("path")
-               .attr("d", line(raceWhite))
-               .style("stroke-width", "2px")
-               .style("fill", "none");
-                
+        .attr("d", line(raceWhite))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
+
       let gTagBlack = raceGTag.append("g")
-                               .attr("class", "race")
-                               .style("stroke", "#800020"); 
+        .attr("class", "race")
+        .style("stroke", "#800020");
       gTagBlack.append("path")
-               .attr("d", line(raceBlack))
-               .style("stroke-width", "2px")
-               .style("fill", "none");   
+        .attr("d", line(raceBlack))
+        .style("stroke-width", "2px")
+        .style("fill", "none");
 
       // setting up hover functionality here
       graphArea.selectAll("g.race")
-               .on("mouseover", function () { 
+        .on("mouseover", function () {
 
-                console.log("hi");
+          console.log("hi");
 
-               });     
+        });
 
       // creating a toggled state for the diff views 
-      let toggled = true;
+      let edToggled = true;
+      let raceToggled = false;
 
-      toggle.on("click", function () {
-        if (toggled) {
-          gTagEdu.attr("visibility", "hidden");
-          raceGTag.attr("visibility", "visible");
-          toggled = false;
-          d3.select(this).text("Show Marriage Rate by Education")
-        } else {
+      edToggle.on("click", function () {
+        if (raceToggled) {
           gTagEdu.attr("visibility", "visible");
           raceGTag.attr("visibility", "hidden");
-          toggled = true;
-          d3.select(this).text("Show Marriage Rate by Race")
+          edToggle.attr("class", "switch selected");
+          raceToggle.attr("class", "switch");
+          raceToggled = false;
+          edToggled = true;
+        }
+      });
+      raceToggle.on("click", function () {
+        if (edToggled) {
+          gTagEdu.attr("visibility", "hidden");
+          raceGTag.attr("visibility", "visible");
+          edToggle.attr("class", "switch");
+          raceToggle.attr("class", "switch selected");
+          raceToggled = true;
+          edToggled = false;
         }
       });
 

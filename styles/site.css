@@ -15,18 +15,26 @@ html {
   /* visibility: hidden; */
 }
 
-.main-container {
-
-}
+.main-container {}
 
 #graph-container {
   padding: 20px;
 }
 
-#subtitle {
-
-}
+#subtitle {}
 
 #description {
-  width: 400px; 
+  width: 400px;
+}
+
+.switch {
+  border: none;
+  margin: 0;
+  width: 100px;
+  height: 30px;
+  justify-content: center;
+}
+
+.selected {
+  background-color: lightblue;
 }
