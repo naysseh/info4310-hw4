@@ -11,7 +11,12 @@
 <body>
   <main>
     <div id="main-container">
-      <svg id="line-graph" height=300 width=350></svg>
+      <h1>Marriage Rates by Education and Race</h1>
+      <h2 id="subtitle">Ages 25 to 34</h2>
+      <div id="graph-container">
+        <svg id="line-graph" height=300 width=350></svg>
+      </div>
+      
       <label for="switch">
         <button id="toggle-button" type="button">Toggle</button>
       </label>
@@ -180,6 +185,14 @@
                .attr("d", line(raceBlack))
                .style("stroke-width", "2px")
                .style("fill", "none");   
+
+      // setting up hover functionality here
+      graphArea.selectAll("g.race")
+               .on("mouseover", function () { 
+
+                console.log("hi");
+
+               });     
 
       // creating a toggled state for the diff views 
       let toggled = true;
