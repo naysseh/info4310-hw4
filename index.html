@@ -12,6 +12,7 @@
   <main>
     <div id="main-container">
       <h1>Marriage Rates by Education and Race</h1>
+      <p id="description">The Pew Research Center released a report in 2014 presenting an overall decline in marriage rates across the United States. Over 50 years prior, the majority of Americans aged 25 to 34 were married. Today, the number has decreased drastically. Does this disparity persist across education levels, and different races?  </p>
       <h2 id="subtitle">Ages 25 to 34</h2>
       <div id="graph-container">
         <svg id="line-graph" height=300 width=350></svg>
@@ -176,7 +177,7 @@
       gTagWhite.append("path")
                .attr("d", line(raceWhite))
                .style("stroke-width", "2px")
-               .style("fill", "none");  
+               .style("fill", "none");
                 
       let gTagBlack = raceGTag.append("g")
                                .attr("class", "race")
