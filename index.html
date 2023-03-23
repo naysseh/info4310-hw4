@@ -19,7 +19,7 @@
       </div>
       
       <label for="switch">
-        <button id="toggle-button" type="button">Toggle</button>
+        <button id="toggle-button" type="button"></button>
       </label>
     </div>
   </main>
@@ -28,7 +28,8 @@
 
   <script>
     const graph = d3.select("svg#line-graph");
-    const toggle = d3.select("button#toggle-button");
+    const toggle = d3.select("button#toggle-button").append("text")
+          .text("Show Marriage Rate by Race");
 
     const requestData = async function () {
       const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
@@ -203,10 +204,12 @@
           gTagEdu.attr("visibility", "hidden");
           raceGTag.attr("visibility", "visible");
           toggled = false;
+          d3.select(this).text("Show Marriage Rate by Education")
         } else {
           gTagEdu.attr("visibility", "visible");
           raceGTag.attr("visibility", "hidden");
           toggled = true;
+          d3.select(this).text("Show Marriage Rate by Race")
         }
       });
 
