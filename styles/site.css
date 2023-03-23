@@ -38,3 +38,7 @@ html {
 .selected {
   background-color: lightblue;
 }
+
+#ed-button {
+  margin-right: -10px;
+}
