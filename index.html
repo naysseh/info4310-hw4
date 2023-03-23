@@ -28,8 +28,8 @@
 
   <script>
     const graph = d3.select("svg#line-graph");
-    const toggle = d3.select("button#toggle-button").append("text")
-          .text("Show Marriage Rate by Race");
+    const toggle = d3.select("button#toggle-button").append("text") 
+          .text("Show Marriage Rate by Race"); // do we want this toggle by text or do we want tabs??? 
 
     const requestData = async function () {
       const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
@@ -38,7 +38,7 @@
 
       const height = graph.attr("height");
       const width = graph.attr("width");
-      const margins = { top: 10, right: 10, bottom: 40, left: 30 };
+      const margins = { top: 10, right: 10, bottom: 40, left: 40 };
 
       const graphHeight = height - margins.top - margins.bottom;
       const graphWidth = width - margins.left - margins.right;
@@ -86,7 +86,7 @@
                        .range([graphHeight, 0])
 
       let bottomAxis = d3.axisBottom(xScale)
-                         .tickFormat(d3.format("d"))
+                         .tickFormat(d3.format("d")) 
                          .ticks(6);
 
       let verticalGrid = d3.axisBottom(xScale)
@@ -109,7 +109,7 @@
       // left axis and horizontal gridlines
       let leftAxis = d3.axisLeft(yScale)
                        .tickValues([0, .25, .50, .75, 1])
-                       .tickFormat(d => d * 100);
+                       .tickFormat(d3.format(".0%") );
 
       let horizontalGrid = d3.axisLeft(yScale)
                              .tickValues([0, .25, .50, .75, 1])
