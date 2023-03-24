@@ -4,6 +4,7 @@
 <head>
   <title>Mariage Isn't Dead - Yet</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="scripts/hoverValues.js"></script>
 
   <link rel="stylesheet" type="text/css" href="styles/site.css">
 </head>
@@ -193,17 +194,34 @@
         .style("stroke-width", "2px")
         .style("fill", "none");
 
-      // setting up hover functionality here
-      graphArea.selectAll("g.race")
-        .on("mouseover", function () {
+      let activeArea = graphArea.append("g");
+      let dropLine = activeArea.append("line")
+        .attr("id","dropLine")
+        .attr("fill","none")
+        .attr("stroke","purple")
+        .attr("stroke-width",2)
+        .attr("y1",0)
+        .attr("y2",graphHeight)
+        .attr("visibility","hidden");
 
-          console.log("hi");
+      let label = activeArea.append("text")
+        .attr("id","label")
+        .attr("visibility","hidden");
 
-        });
-
+      let activeRegion = activeArea.append("rect")
+      .attr("id","activeRegion")
+      .attr("width",graphWidth)
+      .attr("height",graphHeight)
+      .attr("fill","none")
+      .attr("pointer-events","all");
+    
       // creating a toggled state for the diff views 
       let edToggled = true;
       let raceToggled = false;
+
+      // ******* EXTERNAL FUNCTION *****: hoverValues
+      // Credit to Prof. Jeff Rzeszotarski, taken from Lecture on September 29, 2021 (INFO 3300). Placed in a separate file and found in /scripts/hoverValues.js
+      hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
 
       edToggle.on("click", function () {
         if (raceToggled) {
@@ -213,6 +231,8 @@
           raceToggle.attr("class", "switch");
           raceToggled = false;
           edToggled = true;
+          hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
+
         }
       });
       raceToggle.on("click", function () {
@@ -223,6 +243,8 @@
           raceToggle.attr("class", "switch selected");
           raceToggled = true;
           edToggled = false;
+          hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
+
         }
       });
 
