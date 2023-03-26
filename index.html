@@ -221,7 +221,7 @@
 
       // ******* EXTERNAL FUNCTION *****: hoverValues
       // Credit to Prof. Jeff Rzeszotarski, taken from Lecture on September 29, 2021 (INFO 3300). Placed in a separate file and found in /scripts/hoverValues.js
-      hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
+      hoverValues(activeRegion, activeArea, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
 
       edToggle.on("click", function () {
         if (raceToggled) {
@@ -231,7 +231,7 @@
           raceToggle.attr("class", "switch");
           raceToggled = false;
           edToggled = true;
-          hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
+          hoverValues(activeRegion, activeArea, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
 
         }
       });
@@ -243,7 +243,7 @@
           raceToggle.attr("class", "switch selected");
           raceToggled = true;
           edToggled = false;
-          hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
+          hoverValues(activeRegion, activeArea, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
 
         }
       });
