@@ -42,17 +42,17 @@ function hoverValues(
       var BA = Math.round((1 - d.BAp_2534) * 100);
       var SC = Math.round((1 - d.SC_2534) * 100);
       var HS = Math.round((1 - d.HS_2534) * 100);
-      txt = BA + ', ' + SC + ', ' + HS;
+      txt = BA + '%, ' + SC + '%, ' + HS + '%';
     } else if (raceToggled) {
       var white = Math.round((1 - d.White_2534) * 100);
       var hisp = Math.round((1 - d.Hisp_2534) * 100);
       var black = Math.round((1 - d.Black_2534) * 100);
-      txt = white + ', ' + hisp + ', ' + black;
+      txt = white + '%, ' + hisp + '%, ' + black + '% ';
     }
 
     // We started with the following line, which has lots of overlaps
     label
-      .attr('x', xPos - 50)
+      .attr('x', xPos - 80)
       .attr('y', yPos)
       .text(txt);
   });
