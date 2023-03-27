@@ -1,30 +1,19 @@
 html {
-  font-family: "Segoe UI", "Roboto", "Helvetica Neue", "Noto Sans", sans-serif;
+  /* font-family: "Segoe UI", "Roboto", "Helvetica Neue", "Noto Sans", sans-serif; */
+  font-family: 'Didot', sans-serif;
 }
 
 .domain {
   visibility: hidden;
 }
 
-
-.education {
-  /* visibility: visible; */
-}
-
-.race {
-  /* visibility: hidden; */
-}
-
-.main-container {}
-
 #graph-container {
   padding: 20px;
 }
 
-#subtitle {}
-
-#description {
-  width: 400px;
+.toggle {
+  display: flex;
+  justify-content: center;
 }
 
 .switch {
@@ -36,9 +25,111 @@ html {
 }
 
 .selected {
-  background-color: lightblue;
+  background-color: lightsteelblue;
 }
 
 #ed-button {
   margin-right: -10px;
+}
+
+h1 {
+  background-color: #F4D9CB;
+  font-weight: 100;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;
+}
+
+h2 {
+  color: #074253;
+  display: flex;
+  justify-content: center;
+  font-weight: 100;
+}
+
+.hs,
+.some-college,
+.college-grad,
+.hisp,
+.white,
+.black {
+  width: 12px;
+  height: 12px;
+  align-self: center;
+}
+
+.legend {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-end;
+  margin-left: 20px;
+  margin-bottom: 25px;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.legend .label {
+  padding-right: 20px;
+}
+
+.legend {
+  justify-content: center;
+}
+
+.hs {
+  background-color: #0000FF;
+}
+
+.some-college {
+  background-color: #89CFF0;
+}
+
+.college-grad {
+  background-color: #7393B3;
+}
+
+.row {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.label {
+  margin-left: 15px;
+  font-size: 14px;
+  /* color: rgb(80, 80, 80); */
+}
+
+.hisp {
+  background-color: #BF40BF;
+}
+
+.white {
+  background-color: #9F2B68;
+}
+
+.black {
+  background-color: #800020;
+}
+
+.hidden {
+  display: none;
+}
+
+#graph-container {
+  margin-left: 180px;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+p {
+  margin-left: 50px;
+  margin-right: 50px;
 }

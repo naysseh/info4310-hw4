@@ -10,23 +10,55 @@
 </head>
 
 <!-- test -->
+
 <body>
   <main>
     <div id="main-container">
-      <h1>Marriage Rates by Education and Race</h1>
+      <h1>Mariage Isn't Dead - Yet</h1>
+
       <p id="description">The Pew Research Center released a report in 2014 presenting an overall decline in marriage
         rates across the United States. Over 50 years prior, the majority of Americans aged 25 to 34 were married.
         Today, the number has decreased drastically. Does this disparity persist across education levels, and different
         races? </p>
-      <h2 id="subtitle">Ages 25 to 34</h2>
-      <div id="graph-container">
-        <svg id="line-graph" height=300 width=350></svg>
-      </div>
-
+      <h2 id="subtitle">Marriage Rates by Education and Race: Ages 25 to 34</h2>
       <div class="toggle">
         <button class="switch selected" id="ed-button" type="button">Education</button>
         <button class="switch" id="race-button" type="button">Race</button>
         </label>
+      </div>
+
+    </div>
+    <div id="graph-container">
+      <svg id="line-graph" height=400 width=450></svg>
+
+      <div class="legend" id="ed-legend">
+        <div class="row">
+          <div class="hs circle"></div>
+          <div class="label">High School or Less</div>
+        </div>
+        <div class="row">
+          <div class="some-college circle"></div>
+          <div class="label">Some College</div>
+        </div>
+        <div class="row">
+          <div class="college-grad circle"></div>
+          <div class="label">College Graduate</div>
+        </div>
+      </div>
+
+      <div class="legend hidden" id="race-legend">
+        <div class="row">
+          <div class="hisp circle"></div>
+          <div class="label">Hispanic</div>
+        </div>
+        <div class="row">
+          <div class="white circle"></div>
+          <div class="label">White</div>
+        </div>
+        <div class="row">
+          <div class="black circle"></div>
+          <div class="label">Black</div>
+        </div>
       </div>
   </main>
 
@@ -36,6 +68,9 @@
     const graph = d3.select("svg#line-graph");
     const edToggle = d3.select("button#ed-button");
     const raceToggle = d3.select("button#race-button");
+
+    const edLegend = d3.select("div#ed-legend");
+    const raceLegend = d3.select("div#race-legend");
 
     const requestData = async function () {
       const marriageData = await d3.csv("data/both_sexes.csv", d3.autoType);
@@ -196,25 +231,25 @@
 
       let activeArea = graphArea.append("g");
       let dropLine = activeArea.append("line")
-        .attr("id","dropLine")
-        .attr("fill","none")
-        .attr("stroke","purple")
-        .attr("stroke-width",2)
-        .attr("y1",0)
-        .attr("y2",graphHeight)
-        .attr("visibility","hidden");
+        .attr("id", "dropLine")
+        .attr("fill", "none")
+        .attr("stroke", "purple")
+        .attr("stroke-width", 2)
+        .attr("y1", 0)
+        .attr("y2", graphHeight)
+        .attr("visibility", "hidden");
 
       let label = activeArea.append("text")
-        .attr("id","label")
-        .attr("visibility","hidden");
+        .attr("id", "label")
+        .attr("visibility", "hidden");
 
       let activeRegion = activeArea.append("rect")
-      .attr("id","activeRegion")
-      .attr("width",graphWidth)
-      .attr("height",graphHeight)
-      .attr("fill","none")
-      .attr("pointer-events","all");
-    
+        .attr("id", "activeRegion")
+        .attr("width", graphWidth)
+        .attr("height", graphHeight)
+        .attr("fill", "none")
+        .attr("pointer-events", "all");
+
       // creating a toggled state for the diff views 
       let edToggled = true;
       let raceToggled = false;
@@ -229,6 +264,8 @@
           raceGTag.attr("visibility", "hidden");
           edToggle.attr("class", "switch selected");
           raceToggle.attr("class", "switch");
+          edLegend.attr("class", "legend");
+          raceLegend.attr("class", "legend hidden");
           raceToggled = false;
           edToggled = true;
           hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
@@ -241,6 +278,8 @@
           raceGTag.attr("visibility", "visible");
           edToggle.attr("class", "switch");
           raceToggle.attr("class", "switch selected");
+          edLegend.attr("class", "legen hidden");
+          raceLegend.attr("class", "legend");
           raceToggled = true;
           edToggled = false;
           hoverValues(activeRegion, dropLine, label, xScale, yScale, marriageData, raceToggled, edToggled)
