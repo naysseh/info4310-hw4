@@ -1,5 +1,6 @@
 function hoverValues(
   activeRegion,
+  activeArea,
   dropLine,
   label,
   xScale,
@@ -8,14 +9,31 @@ function hoverValues(
   raceToggled,
   edToggled
 ) {
+  let label1 = activeArea
+    .append('text')
+    .attr('id', 'label')
+    .attr('visibility', 'hidden');
+  let label2 = activeArea
+    .append('text')
+    .attr('id', 'label')
+    .attr('visibility', 'hidden');
+  let label3 = activeArea
+    .append('text')
+    .attr('id', 'label')
+    .attr('visibility', 'hidden');
+
   activeRegion.on('mouseover', function () {
     dropLine.attr('visibility', '');
-    label.attr('visibility', '');
+    label1.attr('visibility', '');
+    label3.attr('visibility', '');
+    label2.attr('visibility', '');
   });
 
   activeRegion.on('mouseout', function () {
     dropLine.attr('visibility', 'hidden');
-    label.attr('visibility', 'hidden');
+    label1.attr('visibility', 'hidden');
+    label2.attr('visibility', 'hidden');
+    label3.attr('visibility', 'hidden');
   });
 
   let bisect = d3.bisector((d) => d.year).left;
@@ -37,23 +55,40 @@ function hoverValues(
     dropLine.attr('x1', xPos).attr('x2', xPos);
     // valueMarker.attr("cx",xPos).attr("cy",yPos);
 
-    let txt = '';
+    let txt1 = '';
+    let txt2 = '';
+    let txt3 = '';
+
     if (edToggled) {
       var BA = Math.round((1 - d.BAp_2534) * 100);
       var SC = Math.round((1 - d.SC_2534) * 100);
       var HS = Math.round((1 - d.HS_2534) * 100);
-      txt = BA + ', ' + SC + ', ' + HS;
+      txt1 = BA + '%';
+      txt2 = SC + '%';
+      txt3 = HS + '%';
     } else if (raceToggled) {
       var white = Math.round((1 - d.White_2534) * 100);
       var hisp = Math.round((1 - d.Hisp_2534) * 100);
       var black = Math.round((1 - d.Black_2534) * 100);
-      txt = white + ', ' + hisp + ', ' + black;
+      txt1 = white + '%';
+      txt2 = hisp + '%';
+      txt3 = black + '%';
     }
 
-    // We started with the following line, which has lots of overlaps
-    label
-      .attr('x', xPos - 50)
-      .attr('y', yPos)
-      .text(txt);
+    label1
+      .attr('x', xPos - 40)
+      .attr('y', yScale(0.15))
+      .style('fill', 'darkOrange')
+      .text(txt1);
+    label2
+      .attr('x', xPos - 40)
+      .attr('y', yScale(0.25))
+      .style('fill', 'pink')
+      .text(txt2);
+    label3
+      .attr('x', xPos - 40)
+      .attr('y', yScale(0.05))
+      .style('fill', 'green')
+      .text(txt3);
   });
 }
