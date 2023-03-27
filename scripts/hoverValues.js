@@ -63,32 +63,50 @@ function hoverValues(
       var BA = Math.round((1 - d.BAp_2534) * 100);
       var SC = Math.round((1 - d.SC_2534) * 100);
       var HS = Math.round((1 - d.HS_2534) * 100);
-      txt1 = BA + '%';
+      txt1 = HS + '%';
       txt2 = SC + '%';
-      txt3 = HS + '%';
+      txt3 = BA + '%';
+
+      label1
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.25))
+        .style('fill', '#0000FF')
+        .text(txt1);
+      label2
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.15))
+        .style('fill', '#89CFF0')
+        .text(txt2);
+      label3
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.05))
+        .style('fill', '#7393B3')
+        .text(txt3);
     } else if (raceToggled) {
       var white = Math.round((1 - d.White_2534) * 100);
       var hisp = Math.round((1 - d.Hisp_2534) * 100);
       var black = Math.round((1 - d.Black_2534) * 100);
-      txt1 = white + '%';
-      txt2 = hisp + '%';
+      txt1 = hisp + '%';
+      txt2 = white + '%';
       txt3 = black + '%';
+
+      label1
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.25))
+        .style('fill', '#BF40BF')
+        .text(txt1);
+      label2
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.15))
+        .style('fill', '#9F2B68')
+        .text(txt2);
+      label3
+        .attr('x', xPos - 40)
+        .attr('y', yScale(0.05))
+        .style('fill', '#800020')
+        .text(txt3);
     }
 
-    label1
-      .attr('x', xPos - 40)
-      .attr('y', yScale(0.15))
-      .style('fill', 'darkOrange')
-      .text(txt1);
-    label2
-      .attr('x', xPos - 40)
-      .attr('y', yScale(0.25))
-      .style('fill', 'pink')
-      .text(txt2);
-    label3
-      .attr('x', xPos - 40)
-      .attr('y', yScale(0.05))
-      .style('fill', 'green')
-      .text(txt3);
+
   });
 }
