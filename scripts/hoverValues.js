@@ -103,7 +103,7 @@ function hoverValues(
       label3
         .attr('x', xPos - 40)
         .attr('y', yScale(0.05))
-        .style('fill', '#800020')
+        .style('fill', '#d20035')
         .text(txt3);
     }
 
